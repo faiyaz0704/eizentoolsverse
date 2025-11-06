@@ -12,13 +12,17 @@
 <style>
 : root {
 --bg-color: #f8fafc;
+--card-bg: #ffffff;
 --text-color: #1e293b;
 --border-color: #cbd5e1;
 --button-bg: #3b82f6;
 --button-hover: #2563eb;
+--button-secondary: #64748b;
+--button-secondary-hover: #475569;
 --error-color: #ef4444;
 --success-color: #10b981;
---shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+--shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+--shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08);
 --border-radius: 12px;
 --string-color: #10b981;
 --number-color: #f97316;
@@ -29,13 +33,17 @@
 
 .dark-mode {
 --bg-color: #0f172a;
+--card-bg: #1e293b;
 --text-color: #f1f5f9;
 --border-color: #334155;
---button-bg: #64748b;
---button-hover: #475569;
+--button-bg: #60a5fa;
+--button-hover: #3b82f6;
+--button-secondary: #94a3b8;
+--button-secondary-hover: #64748b;
 --error-color: #f87171;
 --success-color: #34d399;
---shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+--shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+--shadow-md: 0 4px 12px rgba(0, 0, 0, 0.3);
 --string-color: #34d399;
 --number-color: #fb923c;
 --boolean-color: #60a5fa;
@@ -50,12 +58,13 @@ box-sizing: border-box;
 }
 
 body {
-font-family: 'Roboto', sans-serif;
+font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
 background-color: var(--bg-color);
 color: var(--text-color);
 line-height: 1.6;
-transition: background-color 0.3s, color 0.3s;
-padding: 20px;
+transition: background-color 0.3s ease, color 0.3s ease;
+padding: 16px;
+min-height: 100vh;
 }
 
 .container {
@@ -65,104 +74,196 @@ margin: 0 auto;
 
 header {
 text-align: center;
-margin-bottom: 2rem;
-padding: 1.5rem 0;
+margin-bottom: 1.5rem;
+padding: 1rem 0;
 }
 
 h1 {
-font-size: 2.5rem;
+font-size: 2rem;
+font-weight: 700;
 margin-bottom: 0.5rem;
 background: linear-gradient(90deg, #3b82f6, #8b5cf6);
 -webkit-background-clip: text;
 -webkit-text-fill-color: transparent;
+background-clip: text;
 }
 
-p {
+@media (min-width: 768px) {
+h1 { font-size: 2.5rem; }
+}
+
+.subtitle {
 color: #64748b;
-font-size: 1.1rem;
+font-size: 1.05rem;
+max-width: 600px;
+margin: 0 auto;
 }
 
 .mode-toggle {
 position: absolute;
-top: 20px;
-right: 20px;
+top: 16px;
+right: 16px;
+z-index: 10;
 }
 
 #dark-mode-toggle {
-background: none;
-border: none;
+background: var(--card-bg);
+border: 2px solid var(--border-color);
+border-radius: 50%;
+width: 40px;
+height: 40px;
+display: flex;
+align-items: center;
+justify-content: center;
 cursor: pointer;
 color: var(--text-color);
-transition: transform 0.2s;
+transition: all 0.3s ease;
+box-shadow: var(--shadow);
 }
 
 #dark-mode-toggle:hover {
-transform: scale(1.1);
+transform: rotate(20deg);
+background-color: var(--button-bg);
+color: white;
+}
+
+/* Input & Output Cards */
+.card {
+background: var(--card-bg);
+border: 2px solid var(--border-color);
+border-radius: var(--border-radius);
+padding: 1.25rem;
+margin-bottom: 1.25rem;
+box-shadow: var(--shadow);
+transition: box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+.card:hover {
+box-shadow: var(--shadow-md);
+}
+
+.card-header {
+font-size: 0.95rem;
+font-weight: 600;
+margin-bottom: 0.75rem;
+color: var(--text-color);
+display: flex;
+justify-content: space-between;
+align-items: center;
+}
+
+.stats {
+font-size: 0.8rem;
+color: #94a3b8;
+font-weight: 500;
 }
 
 textarea {
 width: 100%;
-min-height: 250px;
+min-height: 220px;
 padding: 1rem;
-border: 2px solid var(--border-color);
+border: none;
 border-radius: var(--border-radius);
 font-family: 'Roboto Mono', monospace;
-font-size: 16px;
-background-color: var(--bg-color);
+font-size: 15px;
+background-color: var(--card-bg);
 color: var(--text-color);
 resize: vertical;
+outline: none;
+}
+
+textarea:focus {
+box-shadow: 0 0 0 2px var(--button-bg), inset 0 0 0 1px var(--button-bg);
 }
 
 .buttons {
 display: flex;
 flex-wrap: wrap;
-gap: 1rem;
-margin: 1.5rem 0;
+gap: 0.75rem;
+margin: 1rem 0;
 }
 
 button {
-padding: 0.8rem 1.5rem;
+padding: 0.75rem 1.25rem;
 border: none;
 border-radius: var(--border-radius);
-background-color: var(--button-bg);
-color: white;
-font-weight: 500;
+font-weight: 600;
 cursor: pointer;
-transition: all 0.2s;
+transition: all 0.25s ease;
+display: flex;
+align-items: center;
+gap: 6px;
+font-size: 0.95rem;
 }
 
-button:hover {
+.format-btn, .minify-btn {
+background-color: var(--button-bg);
+color: white;
+}
+
+.format-btn:hover, .minify-btn:hover {
 background-color: var(--button-hover);
 transform: translateY(-2px);
 }
 
+.copy-btn {
+background-color: var(--button-secondary);
+color: white;
+}
+
+.copy-btn:hover {
+background-color: var(--button-secondary-hover);
+transform: translateY(-2px);
+}
+
+.clear-btn {
+background-color: #f87171;
+color: white;
+}
+
+.clear-btn:hover {
+background-color: #ef4444;
+transform: translateY(-2px);
+}
+
 .json-output {
-min-height: 250px;
-padding: 1.25rem;
-background-color: var(--bg-color);
-border: 2px solid var(--border-color);
+min-height: 220px;
+padding: 1rem;
+background-color: var(--card-bg);
 border-radius: var(--border-radius);
 font-family: 'Roboto Mono', monospace;
-font-size: 16px;
+font-size: 15px;
 white-space: pre-wrap;
 overflow-x: auto;
-box-shadow: var(--shadow);
+line-height: 1.5;
+color: var(--text-color);
 }
 
 .error-message {
 color: var(--error-color);
 margin-top: 1rem;
-padding: 0.75rem;
+padding: 0.75rem 1rem;
 border-radius: var(--border-radius);
 background-color: rgba(239, 68, 68, 0.1);
+border-left: 3px solid var(--error-color);
+display: none;
+}
+
+.success-message {
+color: var(--success-color);
+margin-top: 1rem;
+padding: 0.75rem 1rem;
+border-radius: var(--border-radius);
+background-color: rgba(16, 185, 129, 0.1);
+border-left: 3px solid var(--success-color);
 display: none;
 }
 
 footer {
 text-align: center;
 margin-top: 2rem;
-padding: 1.5rem 0;
-color: #64748b;
+padding: 1.25rem 0;
+color: #94a3b8;
 font-size: 0.9rem;
 border-top: 1px solid var(--border-color);
 }
@@ -172,6 +273,31 @@ border-top: 1px solid var(--border-color);
 .boolean { color: var(--boolean-color); }
 .null { color: var(--null-color); }
 .key { color: var(--key-color); }
+
+/* Responsive */
+@media (max-width: 768px) {
+.container { padding: 0 12px; }
+.buttons { flex-direction: column; }
+button { width: 100%; justify-content: center; }
+h1 { font-size: 1.75rem; }
+}
+
+/* Animation & Feedback */
+@keyframes pulse {
+0% { transform: scale(1); }
+50% { transform: scale(1.03); }
+100% { transform: scale(1); }
+}
+
+.pulse {
+animation: pulse 0.4s ease;
+}
+
+/* Focus states for accessibility */
+button:focus, textarea:focus {
+outline: 2px solid var(--button-bg);
+outline-offset: 2px;
+}
 </style>
 </head>
 
@@ -179,31 +305,43 @@ border-top: 1px solid var(--border-color);
 <div class="container">
 <header>
 <h1>JSON Formatter & Validator</h1>
-<p>Format, validate, and beautify your JSON data instantly</p>
+<p class="subtitle">Format, validate, and beautify your JSON data instantly — no data leaves your browser</p>
 </header>
 
-<main>
 <div class="mode-toggle">
-<button id="dark-mode-toggle" aria-label="Toggle dark mode">🌙</button>
+<button id="dark-mode-toggle" aria-label="Toggle dark mode">
+<span id="theme-icon">🌙</span>
+</button>
 </div>
 
-<label for="json-input">Enter JSON:</label>
-<textarea id="json-input">{ "name": "John", "age": 30 }</textarea>
-
+<main>
+<div class="card">
+<div class="card-header">
+<span>Enter JSON</span>
+<span id="input-stats" class="stats">0 chars</span>
+</div>
+<textarea id="json-input" spellcheck="false">{ "name": "John", "age": 30, "active": true }</textarea>
 <div class="buttons">
-<button id="format-btn">Format</button>
-<button id="minify-btn">Minify</button>
-<button id="copy-btn">Copy</button>
-<button id="clear-btn">Clear</button>
+<button class="format-btn" id="format-btn">✨ Format</button>
+<button class="minify-btn" id="minify-btn">📦 Minify</button>
+<button class="copy-btn" id="copy-btn">📋 Copy</button>
+<button class="clear-btn" id="clear-btn">🗑 Clear</button>
+</div>
+<div id="success-message" class="success-message"></div>
+<div id="error-message" class="error-message"></div>
 </div>
 
-<label for="json-output">Result:</label>
-<div id="json-output" class="json-output"></div>
-<div id="error-message" class="error-message"></div>
+<div class="card">
+<div class="card-header">
+<span>Result</span>
+<span id="output-stats" class="stats">0 lines</span>
+</div>
+<div id="json-output" class="json-output">{}</div>
+</div>
 </main>
 
 <footer>
-<p>Works entirely in your browser — no data sent anywhere.</p>
+<p>✅ 100% client-side • 🔒 No data sent • 🚀 Open Source Friendly</p>
 </footer>
 </div>
 
@@ -212,57 +350,168 @@ document.addEventListener('DOMContentLoaded', () => {
 const input = document.getElementById('json-input');
 const output = document.getElementById('json-output');
 const error = document.getElementById('error-message');
+const success = document.getElementById('success-message');
 const formatBtn = document.getElementById('format-btn');
 const minifyBtn = document.getElementById('minify-btn');
 const copyBtn = document.getElementById('copy-btn');
 const clearBtn = document.getElementById('clear-btn');
 const darkToggle = document.getElementById('dark-mode-toggle');
+const themeIcon = document.getElementById('theme-icon');
+const inputStats = document.getElementById('input-stats');
+const outputStats = document.getElementById('output-stats');
 
-// Dark mode persistence
-if (localStorage.getItem('darkMode') === 'enabled') {
+// Initialize theme based on system preference
+let isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+if (isDark) {
 document.body.classList.add('dark-mode');
+themeIcon.textContent = '☀️';
 }
 
-darkToggle.onclick = () => {
-document.body.classList.toggle('dark-mode');
-localStorage.setItem('darkMode', document.body.classList.contains('dark-mode') ? 'enabled' : 'disabled');
-};
+// Toggle theme
+darkToggle.addEventListener('click', () => {
+isDark = !isDark;
+document.body.classList.toggle('dark-mode', isDark);
+themeIcon.textContent = isDark ? '☀️' : '🌙';
+});
 
-function formatJSON(indent) {
-error.style.display = 'none';
-try {
-const obj = JSON.parse(input.value);
-const formatted = JSON.stringify(obj, null, indent);
-output.innerHTML = highlightSyntax(formatted);
-} catch (e) {
-error.style.display = 'block';
-error.textContent = 'Invalid JSON: ' + e.message;
-output.innerHTML = '';
-}
+// Update stats
+function updateStats() {
+const inputText = input.value.trim();
+const outputText = output.textContent.trim();
+
+inputStats.textContent = `${inputText.length} ${inputText.length === 1 ? 'char' : 'chars'}`;
+
+const lines = outputText ? outputText.split('\n').length : 0;
+outputStats.textContent = `${lines} ${lines === 1 ? 'line' : 'lines'}`;
 }
 
+// Syntax highlighter (preserved & improved)
 function highlightSyntax(json) {
-return json.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, match => {
+return json
+.replace(/&/g, '&amp;')
+.replace(/</g, '&lt;')
+.replace(/>/g, '&gt;')
+.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, match => {
 let cls = 'number';
-if (/^"/.test(match)) cls = /:$/.test(match) ? 'key' : 'string';
-else if (/true|false/.test(match)) cls = 'boolean';
-else if (/null/.test(match)) cls = 'null';
+if (/^"/.test(match)) {
+cls = /:$/.test(match) ? 'key' : 'string';
+} else if (/true|false/.test(match)) {
+cls = 'boolean';
+} else if (/null/.test(match)) {
+cls = 'null';
+}
 return `<span class="${cls}">${match}</span>`;
 });
 }
 
-formatBtn.onclick = () => formatJSON(2);
-minifyBtn.onclick = () => formatJSON(0);
-copyBtn.onclick = () => navigator.clipboard.writeText(output.textContent || '');
-clearBtn.onclick = () => {
-input.value = '';
-output.innerHTML = '';
-error.style.display = 'none';
-};
+// Format JSON with visual feedback
+function formatJSON(indent) {
+hideMessages();
+const value = input.value.trim();
 
+if (!value) {
+output.innerHTML = '<span style="color:#94a3b8">Enter JSON to format...</span>';
+updateStats();
+return;
+}
+
+try {
+const obj = JSON.parse(value);
+const formatted = JSON.stringify(obj, null, indent);
+output.innerHTML = highlightSyntax(formatted);
+showSuccess(`✅ ${indent === 0 ? 'Minified' : 'Formatted'} successfully!`);
+updateStats();
+} catch (e) {
+showError(`❌ Invalid JSON: ${e.message}`);
+output.innerHTML = '<span style="color:#94a3b8">Fix errors to see formatted output</span>';
+}
+}
+
+// Message helpers
+function showError(message) {
+error.textContent = message;
+error.style.display = 'block';
+success.style.display = 'none';
+}
+
+function showSuccess(message) {
+success.textContent = message;
+success.style.display = 'block';
+error.style.display = 'none';
+}
+
+function hideMessages() {
+error.style.display = 'none';
+success.style.display = 'none';
+}
+
+// Button actions
+formatBtn.addEventListener('click', () => {
+formatBtn.classList.add('pulse');
+setTimeout(() => formatBtn.classList.remove('pulse'), 400);
 formatJSON(2);
+});
+
+minifyBtn.addEventListener('click', () => {
+minifyBtn.classList.add('pulse');
+setTimeout(() => minifyBtn.classList.remove('pulse'), 400);
+formatJSON(0);
+});
+
+copyBtn.addEventListener('click', async () => {
+try {
+const text = output.textContent.trim();
+if (!text || text === '{}') {
+showError('⚠️ Nothing to copy');
+return;
+}
+await navigator.clipboard.writeText(text);
+showSuccess('✅ Copied to clipboard!');
+copyBtn.classList.add('pulse');
+setTimeout(() => copyBtn.classList.remove('pulse'), 400);
+} catch (err) {
+showError('❌ Failed to copy');
+}
+});
+
+clearBtn.addEventListener('click', () => {
+input.value = '';
+output.innerHTML = '{}';
+hideMessages();
+updateStats();
+});
+
+// Real-time input stats
+input.addEventListener('input', () => {
+hideMessages();
+updateStats();
+});
+
+// Keyboard shortcuts
+document.addEventListener('keydown', (e) => {
+if (e.ctrlKey || e.metaKey) {
+if (e.key === 'f' || e.key === 'F') {
+e.preventDefault();
+formatBtn.click();
+} else if (e.key === 'm' || e.key === 'M') {
+e.preventDefault();
+minifyBtn.click();
+} else if (e.key === 'c' || e.key === 'C') {
+e.preventDefault();
+copyBtn.click();
+} else if (e.key === 'l' || e.key === 'L') {
+e.preventDefault();
+clearBtn.click();
+}
+}
+});
+
+// Initialize
+updateStats();
+formatJSON(2); // Initial format
 });
 </script>
 </body>
 </html>
+
 
