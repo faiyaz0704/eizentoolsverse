@@ -4,514 +4,545 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Free JSON Formatter & Validator | JSONTool</title>
-<meta name="description" content=" Format, validate, and beautify JSON instantly online. Fast, free, and privacy-friendly." />
+<meta name="description" content="Format, validate, and beautify JSON instantly online. Fast, free, and privacy-friendly." />
 
 <!-- ✅ Fixed base tag (important for GitHub Pages) -->
 <base href="/eizentoolSverse/">
 
 <style>
-: root {
---bg-color: #f8fafc;
---card-bg: #ffffff;
---text-color: #1e293b;
---border-color: #cbd5e1;
---button-bg: #3b82f6;
---button-hover: #2563eb;
---button-secondary: #64748b;
---button-secondary-hover: #475569;
---error-color: #ef4444;
---success-color: #10b981;
---shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
---shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08);
---border-radius: 12px;
---string-color: #10b981;
---number-color: #f97316;
---boolean-color: #3b82f6;
---null-color: #8b5cf6;
---key-color: #ef4444;
+:root {
+  --bg-color: #ffffff;
+  --card-bg: #ffffff;
+  --text-color: #1e293b;
+  --border-color: #e2e8f0;
+  --button-bg: #3b82f6;
+  --button-hover: #2563eb;
+  --button-secondary: #64748b;
+  --button-secondary-hover: #475569;
+  --error-color: #dc2626;
+  --success-color: #059669;
+  --shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08);
+  --border-radius: 12px;
+
+  /* High contrast syntax colors for LIGHT MODE */
+  --string-color: #059669;     /* Emerald 600 */
+  --number-color: #f59e0b;     /* Amber 500 */
+  --boolean-color: #3b82f6;    /* Blue 500 */
+  --null-color: #8b5cf6;       /* Violet 500 */
+  --key-color: #dc2626;        /* Red 600 */
 }
 
 .dark-mode {
---bg-color: #0f172a;
---card-bg: #1e293b;
---text-color: #f1f5f9;
---border-color: #334155;
---button-bg: #60a5fa;
---button-hover: #3b82f6;
---button-secondary: #94a3b8;
---button-secondary-hover: #64748b;
---error-color: #f87171;
---success-color: #34d399;
---shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
---shadow-md: 0 4px 12px rgba(0, 0, 0, 0.3);
---string-color: #34d399;
---number-color: #fb923c;
---boolean-color: #60a5fa;
---null-color: #a78bfa;
---key-color: #f87171;
+  --bg-color: #0f172a;
+  --card-bg: #1e293b;
+  --text-color: #f1f5f9;
+  --border-color: #334155;
+  --button-bg: #60a5fa;
+  --button-hover: #3b82f6;
+  --button-secondary: #94a3b8;
+  --button-secondary-hover: #64748b;
+  --error-color: #f87171;
+  --success-color: #34d399;
+  --shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.3);
+
+  /* High contrast syntax colors for DARK MODE */
+  --string-color: #34d399;     /* Emerald 400 */
+  --number-color: #fb923c;     /* Orange 400 */
+  --boolean-color: #60a5fa;    /* Blue 400 */
+  --null-color: #a78bfa;       /* Violet 400 */
+  --key-color: #f87171;        /* Red 400 */
 }
 
 * {
-margin: 0;
-padding: 0;
-box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
 body {
-font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-background-color: var(--bg-color);
-color: var(--text-color);
-line-height: 1.6;
-transition: background-color 0.3s ease, color 0.3s ease;
-padding: 16px;
-min-height: 100vh;
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  line-height: 1.6;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  padding: 16px;
+  min-height: 100vh;
 }
 
 .container {
-max-width: 1200px;
-margin: 0 auto;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
 header {
-text-align: center;
-margin-bottom: 1.5rem;
-padding: 1rem 0;
+  text-align: center;
+  margin-bottom: 1.5rem;
+  padding: 1rem 0;
 }
 
 h1 {
-font-size: 2rem;
-font-weight: 700;
-margin-bottom: 0.5rem;
-background: linear-gradient(90deg, #3b82f6, #8b5cf6);
--webkit-background-clip: text;
--webkit-text-fill-color: transparent;
-background-clip: text;
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  background: linear-gradient(90deg, #3b82f6, #8b5cf6);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 @media (min-width: 768px) {
-h1 { font-size: 2.5rem; }
+  h1 { font-size: 2.5rem; }
 }
 
 .subtitle {
-color: #64748b;
-font-size: 1.05rem;
-max-width: 600px;
-margin: 0 auto;
+  color: #64748b;
+  font-size: 1.05rem;
+  max-width: 600px;
+  margin: 0 auto;
 }
 
 .mode-toggle {
-position: absolute;
-top: 16px;
-right: 16px;
-z-index: 10;
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  z-index: 10;
 }
 
 #dark-mode-toggle {
-background: var(--card-bg);
-border: 2px solid var(--border-color);
-border-radius: 50%;
-width: 40px;
-height: 40px;
-display: flex;
-align-items: center;
-justify-content: center;
-cursor: pointer;
-color: var(--text-color);
-transition: all 0.3s ease;
-box-shadow: var(--shadow);
+  background: var(--card-bg);
+  border: 2px solid var(--border-color);
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: var(--text-color);
+  transition: all 0.3s ease;
+  box-shadow: var(--shadow);
 }
 
 #dark-mode-toggle:hover {
-transform: rotate(20deg);
-background-color: var(--button-bg);
-color: white;
+  transform: rotate(20deg);
+  background-color: var(--button-bg);
+  color: white;
 }
 
 /* Input & Output Cards */
 .card {
-background: var(--card-bg);
-border: 2px solid var(--border-color);
-border-radius: var(--border-radius);
-padding: 1.25rem;
-margin-bottom: 1.25rem;
-box-shadow: var(--shadow);
-transition: box-shadow 0.3s ease, border-color 0.3s ease;
+  background: var(--card-bg);
+  border: 2px solid var(--border-color);
+  border-radius: var(--border-radius);
+  padding: 1.25rem;
+  margin-bottom: 1.25rem;
+  box-shadow: var(--shadow);
+  transition: box-shadow 0.3s ease, border-color 0.3s ease;
 }
 
 .card:hover {
-box-shadow: var(--shadow-md);
+  box-shadow: var(--shadow-md);
 }
 
 .card-header {
-font-size: 0.95rem;
-font-weight: 600;
-margin-bottom: 0.75rem;
-color: var(--text-color);
-display: flex;
-justify-content: space-between;
-align-items: center;
+  font-size: 0.95rem;
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+  color: var(--text-color);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .stats {
-font-size: 0.8rem;
-color: #94a3b8;
-font-weight: 500;
+  font-size: 0.8rem;
+  color: #94a3b8;
+  font-weight: 500;
 }
 
 textarea {
-width: 100%;
-min-height: 220px;
-padding: 1rem;
-border: none;
-border-radius: var(--border-radius);
-font-family: 'Roboto Mono', monospace;
-font-size: 15px;
-background-color: var(--card-bg);
-color: var(--text-color);
-resize: vertical;
-outline: none;
+  width: 100%;
+  min-height: 220px;
+  padding: 1rem;
+  border: none;
+  border-radius: var(--border-radius);
+  font-family: 'Roboto Mono', monospace;
+  font-size: 15px;
+  background-color: var(--card-bg);
+  color: var(--text-color);
+  resize: vertical;
+  outline: none;
 }
 
 textarea:focus {
-box-shadow: 0 0 0 2px var(--button-bg), inset 0 0 0 1px var(--button-bg);
+  box-shadow: 0 0 0 2px var(--button-bg), inset 0 0 0 1px var(--button-bg);
 }
 
 .buttons {
-display: flex;
-flex-wrap: wrap;
-gap: 0.75rem;
-margin: 1rem 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin: 1rem 0;
 }
 
 button {
-padding: 0.75rem 1.25rem;
-border: none;
-border-radius: var(--border-radius);
-font-weight: 600;
-cursor: pointer;
-transition: all 0.25s ease;
-display: flex;
-align-items: center;
-gap: 6px;
-font-size: 0.95rem;
+  padding: 0.75rem 1.25rem;
+  border: none;
+  border-radius: var(--border-radius);
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.95rem;
 }
 
 .format-btn, .minify-btn {
-background-color: var(--button-bg);
-color: white;
+  background-color: var(--button-bg);
+  color: white;
 }
 
 .format-btn:hover, .minify-btn:hover {
-background-color: var(--button-hover);
-transform: translateY(-2px);
+  background-color: var(--button-hover);
+  transform: translateY(-2px);
 }
 
 .copy-btn {
-background-color: var(--button-secondary);
-color: white;
+  background-color: var(--button-secondary);
+  color: white;
 }
 
 .copy-btn:hover {
-background-color: var(--button-secondary-hover);
-transform: translateY(-2px);
+  background-color: var(--button-secondary-hover);
+  transform: translateY(-2px);
 }
 
 .clear-btn {
-background-color: #f87171;
-color: white;
+  background-color: #dc2626;
+  color: white;
 }
 
 .clear-btn:hover {
-background-color: #ef4444;
-transform: translateY(-2px);
+  background-color: #b91c1c;
+  transform: translateY(-2px);
 }
 
 .json-output {
-min-height: 220px;
-padding: 1rem;
-background-color: var(--card-bg);
-border-radius: var(--border-radius);
-font-family: 'Roboto Mono', monospace;
-font-size: 15px;
-white-space: pre-wrap;
-overflow-x: auto;
-line-height: 1.5;
-color: var(--text-color);
+  min-height: 220px;
+  padding: 1rem;
+  background-color: var(--card-bg);
+  border-radius: var(--border-radius);
+  font-family: 'Roboto Mono', monospace;
+  font-size: 15px;
+  white-space: pre-wrap;
+  overflow-x: auto;
+  line-height: 1.5;
+  color: var(--text-color);
+  word-wrap: break-word;
 }
 
 .error-message {
-color: var(--error-color);
-margin-top: 1rem;
-padding: 0.75rem 1rem;
-border-radius: var(--border-radius);
-background-color: rgba(239, 68, 68, 0.1);
-border-left: 3px solid var(--error-color);
-display: none;
+  color: var(--error-color);
+  margin-top: 1rem;
+  padding: 0.75rem 1rem;
+  border-radius: var(--border-radius);
+  background-color: rgba(220, 38, 38, 0.1);
+  border-left: 3px solid var(--error-color);
+  display: none;
 }
 
 .success-message {
-color: var(--success-color);
-margin-top: 1rem;
-padding: 0.75rem 1rem;
-border-radius: var(--border-radius);
-background-color: rgba(16, 185, 129, 0.1);
-border-left: 3px solid var(--success-color);
-display: none;
+  color: var(--success-color);
+  margin-top: 1rem;
+  padding: 0.75rem 1rem;
+  border-radius: var(--border-radius);
+  background-color: rgba(5, 150, 105, 0.1);
+  border-left: 3px solid var(--success-color);
+  display: none;
 }
 
 footer {
-text-align: center;
-margin-top: 2rem;
-padding: 1.25rem 0;
-color: #94a3b8;
-font-size: 0.9rem;
-border-top: 1px solid var(--border-color);
+  text-align: center;
+  margin-top: 2rem;
+  padding: 1.25rem 0;
+  color: #94a3b8;
+  font-size: 0.9rem;
+  border-top: 1px solid var(--border-color);
 }
 
-.string { color: var(--string-color); }
-.number { color: var(--number-color); }
-.boolean { color: var(--boolean-color); }
-.null { color: var(--null-color); }
-.key { color: var(--key-color); }
+.string { 
+  color: var(--string-color); 
+  font-weight: 500;
+}
+.number { 
+  color: var(--number-color); 
+  font-weight: 500;
+}
+.boolean { 
+  color: var(--boolean-color); 
+  font-weight: 500;
+}
+.null { 
+  color: var(--null-color); 
+  font-weight: 500;
+}
+.key { 
+  color: var(--key-color); 
+  font-weight: 600;
+}
 
 /* Responsive */
 @media (max-width: 768px) {
-.container { padding: 0 12px; }
-.buttons { flex-direction: column; }
-button { width: 100%; justify-content: center; }
-h1 { font-size: 1.75rem; }
+  .container { padding: 0 12px; }
+  .buttons { flex-direction: column; }
+  button { width: 100%; justify-content: center; }
+  h1 { font-size: 1.75rem; }
 }
 
 /* Animation & Feedback */
 @keyframes pulse {
-0% { transform: scale(1); }
-50% { transform: scale(1.03); }
-100% { transform: scale(1); }
+  0% { transform: scale(1); }
+  50% { transform: scale(1.03); }
+  100% { transform: scale(1); }
 }
 
 .pulse {
-animation: pulse 0.4s ease;
+  animation: pulse 0.4s ease;
 }
 
 /* Focus states for accessibility */
 button:focus, textarea:focus {
-outline: 2px solid var(--button-bg);
-outline-offset: 2px;
+  outline: 2px solid var(--button-bg);
+  outline-offset: 2px;
+}
+
+/* Ensure syntax colors are always visible */
+.json-output * {
+  word-break: break-all;
+}
+
+/* Fallback for empty content */
+.json-output:empty::before {
+  content: "Enter JSON to see formatted output...";
+  color: #94a3b8;
+  font-style: italic;
 }
 </style>
 </head>
 
 <body>
 <div class="container">
-<header>
-<h1>JSON Formatter & Validator</h1>
-<p class="subtitle">Format, validate, and beautify your JSON data instantly — no data leaves your browser</p>
-</header>
+  <header>
+    <h1>JSON Formatter & Validator</h1>
+    <p class="subtitle">Format, validate, and beautify your JSON data instantly — no data leaves your browser</p>
+  </header>
 
-<div class="mode-toggle">
-<button id="dark-mode-toggle" aria-label="Toggle dark mode">
-<span id="theme-icon">🌙</span>
-</button>
-</div>
+  <div class="mode-toggle">
+    <button id="dark-mode-toggle" aria-label="Toggle dark mode">
+      <span id="theme-icon">🌙</span>
+    </button>
+  </div>
 
-<main>
-<div class="card">
-<div class="card-header">
-<span>Enter JSON</span>
-<span id="input-stats" class="stats">0 chars</span>
-</div>
-<textarea id="json-input" spellcheck="false">{ "name": "John", "age": 30, "active": true }</textarea>
-<div class="buttons">
-<button class="format-btn" id="format-btn">✨ Format</button>
-<button class="minify-btn" id="minify-btn">📦 Minify</button>
-<button class="copy-btn" id="copy-btn">📋 Copy</button>
-<button class="clear-btn" id="clear-btn">🗑 Clear</button>
-</div>
-<div id="success-message" class="success-message"></div>
-<div id="error-message" class="error-message"></div>
-</div>
+  <main>
+    <div class="card">
+      <div class="card-header">
+        <span>Enter JSON</span>
+        <span id="input-stats" class="stats">0 chars</span>
+      </div>
+      <textarea id="json-input" spellcheck="false">{ "name": "John", "age": 30, "active": true }</textarea>
+      <div class="buttons">
+        <button class="format-btn" id="format-btn">✨ Format</button>
+        <button class="minify-btn" id="minify-btn">📦 Minify</button>
+        <button class="copy-btn" id="copy-btn">📋 Copy</button>
+        <button class="clear-btn" id="clear-btn">🗑 Clear</button>
+      </div>
+      <div id="success-message" class="success-message"></div>
+      <div id="error-message" class="error-message"></div>
+    </div>
 
-<div class="card">
-<div class="card-header">
-<span>Result</span>
-<span id="output-stats" class="stats">0 lines</span>
-</div>
-<div id="json-output" class="json-output">{}</div>
-</div>
-</main>
+    <div class="card">
+      <div class="card-header">
+        <span>Result</span>
+        <span id="output-stats" class="stats">0 lines</span>
+      </div>
+      <div id="json-output" class="json-output">{}</div>
+    </div>
+  </main>
 
-<footer>
-<p>✅ 100% client-side • 🔒 No data sent • 🚀 Open Source Friendly</p>
-</footer>
+  <footer>
+    <p>✅ 100% client-side • 🔒 No data sent • 🚀 Open Source Friendly</p>
+  </footer>
 </div>
 
 <script>
 document.addEventListener('DOMContentLoaded', () => {
-const input = document.getElementById('json-input');
-const output = document.getElementById('json-output');
-const error = document.getElementById('error-message');
-const success = document.getElementById('success-message');
-const formatBtn = document.getElementById('format-btn');
-const minifyBtn = document.getElementById('minify-btn');
-const copyBtn = document.getElementById('copy-btn');
-const clearBtn = document.getElementById('clear-btn');
-const darkToggle = document.getElementById('dark-mode-toggle');
-const themeIcon = document.getElementById('theme-icon');
-const inputStats = document.getElementById('input-stats');
-const outputStats = document.getElementById('output-stats');
+  const input = document.getElementById('json-input');
+  const output = document.getElementById('json-output');
+  const error = document.getElementById('error-message');
+  const success = document.getElementById('success-message');
+  const formatBtn = document.getElementById('format-btn');
+  const minifyBtn = document.getElementById('minify-btn');
+  const copyBtn = document.getElementById('copy-btn');
+  const clearBtn = document.getElementById('clear-btn');
+  const darkToggle = document.getElementById('dark-mode-toggle');
+  const themeIcon = document.getElementById('theme-icon');
+  const inputStats = document.getElementById('input-stats');
+  const outputStats = document.getElementById('output-stats');
 
-// Initialize theme based on system preference
-let isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-if (isDark) {
-document.body.classList.add('dark-mode');
-themeIcon.textContent = '☀️';
-}
+  // Initialize theme based on system preference
+  let isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+  if (isDark) {
+    document.body.classList.add('dark-mode');
+    themeIcon.textContent = '☀️';
+  }
 
-// Toggle theme
-darkToggle.addEventListener('click', () => {
-isDark = !isDark;
-document.body.classList.toggle('dark-mode', isDark);
-themeIcon.textContent = isDark ? '☀️' : '🌙';
-});
+  // Toggle theme
+  darkToggle.addEventListener('click', () => {
+    isDark = !isDark;
+    document.body.classList.toggle('dark-mode', isDark);
+    themeIcon.textContent = isDark ? '☀️' : '🌙';
+  });
 
-// Update stats
-function updateStats() {
-const inputText = input.value.trim();
-const outputText = output.textContent.trim();
+  // Update stats
+  function updateStats() {
+    const inputText = input.value.trim();
+    const outputText = output.textContent.trim();
+    
+    inputStats.textContent = `${inputText.length} ${inputText.length === 1 ? 'char' : 'chars'}`;
+    
+    const lines = outputText ? outputText.split('\n').length : 0;
+    outputStats.textContent = `${lines} ${lines === 1 ? 'line' : 'lines'}`;
+  }
 
-inputStats.textContent = `${inputText.length} ${inputText.length === 1 ? 'char' : 'chars'}`;
+  // Syntax highlighter (preserved & improved)
+  function highlightSyntax(json) {
+    return json
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, match => {
+        let cls = 'number';
+        if (/^"/.test(match)) {
+          cls = /:$/.test(match) ? 'key' : 'string';
+        } else if (/true|false/.test(match)) {
+          cls = 'boolean';
+        } else if (/null/.test(match)) {
+          cls = 'null';
+        }
+        return `<span class="${cls}">${match}</span>`;
+      });
+  }
 
-const lines = outputText ? outputText.split('\n').length : 0;
-outputStats.textContent = `${lines} ${lines === 1 ? 'line' : 'lines'}`;
-}
+  // Format JSON with visual feedback
+  function formatJSON(indent) {
+    hideMessages();
+    const value = input.value.trim();
+    
+    if (!value) {
+      output.innerHTML = '<span style="color:#94a3b8">Enter JSON to format...</span>';
+      updateStats();
+      return;
+    }
 
-// Syntax highlighter (preserved & improved)
-function highlightSyntax(json) {
-return json
-.replace(/&/g, '&amp;')
-.replace(/</g, '&lt;')
-.replace(/>/g, '&gt;')
-.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, match => {
-let cls = 'number';
-if (/^"/.test(match)) {
-cls = /:$/.test(match) ? 'key' : 'string';
-} else if (/true|false/.test(match)) {
-cls = 'boolean';
-} else if (/null/.test(match)) {
-cls = 'null';
-}
-return `<span class="${cls}">${match}</span>`;
-});
-}
+    try {
+      const obj = JSON.parse(value);
+      const formatted = JSON.stringify(obj, null, indent);
+      output.innerHTML = highlightSyntax(formatted);
+      showSuccess(`✅ ${indent === 0 ? 'Minified' : 'Formatted'} successfully!`);
+      updateStats();
+    } catch (e) {
+      showError(`❌ Invalid JSON: ${e.message}`);
+      output.innerHTML = '<span style="color:#94a3b8">Fix errors to see formatted output</span>';
+    }
+  }
 
-// Format JSON with visual feedback
-function formatJSON(indent) {
-hideMessages();
-const value = input.value.trim();
+  // Message helpers
+  function showError(message) {
+    error.textContent = message;
+    error.style.display = 'block';
+    success.style.display = 'none';
+  }
 
-if (!value) {
-output.innerHTML = '<span style="color:#94a3b8">Enter JSON to format...</span>';
-updateStats();
-return;
-}
+  function showSuccess(message) {
+    success.textContent = message;
+    success.style.display = 'block';
+    error.style.display = 'none';
+  }
 
-try {
-const obj = JSON.parse(value);
-const formatted = JSON.stringify(obj, null, indent);
-output.innerHTML = highlightSyntax(formatted);
-showSuccess(`✅ ${indent === 0 ? 'Minified' : 'Formatted'} successfully!`);
-updateStats();
-} catch (e) {
-showError(`❌ Invalid JSON: ${e.message}`);
-output.innerHTML = '<span style="color:#94a3b8">Fix errors to see formatted output</span>';
-}
-}
+  function hideMessages() {
+    error.style.display = 'none';
+    success.style.display = 'none';
+  }
 
-// Message helpers
-function showError(message) {
-error.textContent = message;
-error.style.display = 'block';
-success.style.display = 'none';
-}
+  // Button actions
+  formatBtn.addEventListener('click', () => {
+    formatBtn.classList.add('pulse');
+    setTimeout(() => formatBtn.classList.remove('pulse'), 400);
+    formatJSON(2);
+  });
 
-function showSuccess(message) {
-success.textContent = message;
-success.style.display = 'block';
-error.style.display = 'none';
-}
+  minifyBtn.addEventListener('click', () => {
+    minifyBtn.classList.add('pulse');
+    setTimeout(() => minifyBtn.classList.remove('pulse'), 400);
+    formatJSON(0);
+  });
 
-function hideMessages() {
-error.style.display = 'none';
-success.style.display = 'none';
-}
+  copyBtn.addEventListener('click', async () => {
+    try {
+      const text = output.textContent.trim();
+      if (!text || text === '{}') {
+        showError('⚠️ Nothing to copy');
+        return;
+      }
+      await navigator.clipboard.writeText(text);
+      showSuccess('✅ Copied to clipboard!');
+      copyBtn.classList.add('pulse');
+      setTimeout(() => copyBtn.classList.remove('pulse'), 400);
+    } catch (err) {
+      showError('❌ Failed to copy');
+    }
+  });
 
-// Button actions
-formatBtn.addEventListener('click', () => {
-formatBtn.classList.add('pulse');
-setTimeout(() => formatBtn.classList.remove('pulse'), 400);
-formatJSON(2);
-});
+  clearBtn.addEventListener('click', () => {
+    input.value = '';
+    output.innerHTML = '{}';
+    hideMessages();
+    updateStats();
+  });
 
-minifyBtn.addEventListener('click', () => {
-minifyBtn.classList.add('pulse');
-setTimeout(() => minifyBtn.classList.remove('pulse'), 400);
-formatJSON(0);
-});
+  // Real-time input stats
+  input.addEventListener('input', () => {
+    hideMessages();
+    updateStats();
+  });
 
-copyBtn.addEventListener('click', async () => {
-try {
-const text = output.textContent.trim();
-if (!text || text === '{}') {
-showError('⚠️ Nothing to copy');
-return;
-}
-await navigator.clipboard.writeText(text);
-showSuccess('✅ Copied to clipboard!');
-copyBtn.classList.add('pulse');
-setTimeout(() => copyBtn.classList.remove('pulse'), 400);
-} catch (err) {
-showError('❌ Failed to copy');
-}
-});
+  // Keyboard shortcuts
+  document.addEventListener('keydown', (e) => {
+    if (e.ctrlKey || e.metaKey) {
+      if (e.key === 'f' || e.key === 'F') {
+        e.preventDefault();
+        formatBtn.click();
+      } else if (e.key === 'm' || e.key === 'M') {
+        e.preventDefault();
+        minifyBtn.click();
+      } else if (e.key === 'c' || e.key === 'C') {
+        e.preventDefault();
+        copyBtn.click();
+      } else if (e.key === 'l' || e.key === 'L') {
+        e.preventDefault();
+        clearBtn.click();
+      }
+    }
+  });
 
-clearBtn.addEventListener('click', () => {
-input.value = '';
-output.innerHTML = '{}';
-hideMessages();
-updateStats();
-});
-
-// Real-time input stats
-input.addEventListener('input', () => {
-hideMessages();
-updateStats();
-});
-
-// Keyboard shortcuts
-document.addEventListener('keydown', (e) => {
-if (e.ctrlKey || e.metaKey) {
-if (e.key === 'f' || e.key === 'F') {
-e.preventDefault();
-formatBtn.click();
-} else if (e.key === 'm' || e.key === 'M') {
-e.preventDefault();
-minifyBtn.click();
-} else if (e.key === 'c' || e.key === 'C') {
-e.preventDefault();
-copyBtn.click();
-} else if (e.key === 'l' || e.key === 'L') {
-e.preventDefault();
-clearBtn.click();
-}
-}
-});
-
-// Initialize
-updateStats();
-formatJSON(2); // Initial format
+  // Initialize
+  updateStats();
+  formatJSON(2); // Initial format
 });
 </script>
 </body>
 </html>
-
 
