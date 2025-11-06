@@ -4,13 +4,13 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Free JSON Formatter & Validator | JSONTool</title>
-<meta name="description" content="Format, validate, and beautify JSON instantly online. Fast, free, and privacy-friendly." />
+<meta name="description" content=" Format, validate, and beautify JSON instantly online. Fast, free, and privacy-friendly." />
 
 <!-- ✅ Fixed base tag (important for GitHub Pages) -->
 <base href="/eizentoolSverse/">
 
 <style>
-:root {
+: root {
   --bg-color: #ffffff;
   --card-bg: #ffffff;
   --text-color: #1e293b;
@@ -69,6 +69,7 @@ body {
   transition: background-color 0.3s ease, color 0.3s ease;
   padding: 16px;
   min-height: 100vh;
+  position: relative;
 }
 
 .container {
@@ -244,26 +245,6 @@ button {
   word-wrap: break-word;
 }
 
-.error-message {
-  color: var(--error-color);
-  margin-top: 1rem;
-  padding: 0.75rem 1rem;
-  border-radius: var(--border-radius);
-  background-color: rgba(220, 38, 38, 0.1);
-  border-left: 3px solid var(--error-color);
-  display: none;
-}
-
-.success-message {
-  color: var(--success-color);
-  margin-top: 1rem;
-  padding: 0.75rem 1rem;
-  border-radius: var(--border-radius);
-  background-color: rgba(5, 150, 105, 0.1);
-  border-left: 3px solid var(--success-color);
-  display: none;
-}
-
 footer {
   text-align: center;
   margin-top: 2rem;
@@ -294,12 +275,66 @@ footer {
   font-weight: 600;
 }
 
+/* ✅ NEW: Elegant Success/Error Toast */
+.toast {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 1000;
+  padding: 12px 20px;
+  border-radius: 50px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+  transform: translateX(200%) scale(0.9);
+  opacity: 0;
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  pointer-events: none;
+}
+
+.toast.show {
+  transform: translateX(0) scale(1);
+  opacity: 1;
+  pointer-events: all;
+}
+
+.toast.success {
+  background: linear-gradient(135deg, #059669, #10b799);
+  color: white;
+}
+
+.dark-mode .toast.success {
+  background: linear-gradient(135deg, #047857, #0ea079);
+}
+
+.toast.error {
+  background: linear-gradient(135deg, #dc2626, #ef4444);
+  color: white;
+}
+
+.toast-icon {
+  font-size: 1.2rem;
+  display: flex;
+}
+
 /* Responsive */
 @media (max-width: 768px) {
   .container { padding: 0 12px; }
   .buttons { flex-direction: column; }
   button { width: 100%; justify-content: center; }
   h1 { font-size: 1.75rem; }
+  .toast { 
+    top: 16px; 
+    left: 50%;
+    right: auto;
+    transform: translateX(50%) scale(0.9);
+  }
+  .toast.show {
+    transform: translateX(50%) scale(1);
+  }
 }
 
 /* Animation & Feedback */
@@ -317,11 +352,6 @@ footer {
 button:focus, textarea:focus {
   outline: 2px solid var(--button-bg);
   outline-offset: 2px;
-}
-
-/* Ensure syntax colors are always visible */
-.json-output * {
-  word-break: break-all;
 }
 
 /* Fallback for empty content */
@@ -359,8 +389,6 @@ button:focus, textarea:focus {
         <button class="copy-btn" id="copy-btn">📋 Copy</button>
         <button class="clear-btn" id="clear-btn">🗑 Clear</button>
       </div>
-      <div id="success-message" class="success-message"></div>
-      <div id="error-message" class="error-message"></div>
     </div>
 
     <div class="card">
@@ -377,12 +405,16 @@ button:focus, textarea:focus {
   </footer>
 </div>
 
+<!-- ✅ NEW: Toast Notification Container -->
+<div id="toast" class="toast">
+  <span class="toast-icon">✓</span>
+  <span id="toast-message">Action completed!</span>
+</div>
+
 <script>
 document.addEventListener('DOMContentLoaded', () => {
   const input = document.getElementById('json-input');
   const output = document.getElementById('json-output');
-  const error = document.getElementById('error-message');
-  const success = document.getElementById('success-message');
   const formatBtn = document.getElementById('format-btn');
   const minifyBtn = document.getElementById('minify-btn');
   const copyBtn = document.getElementById('copy-btn');
@@ -391,15 +423,18 @@ document.addEventListener('DOMContentLoaded', () => {
   const themeIcon = document.getElementById('theme-icon');
   const inputStats = document.getElementById('input-stats');
   const outputStats = document.getElementById('output-stats');
+  
+  // ✅ Toast elements
+  const toast = document.getElementById('toast');
+  const toastMessage = document.getElementById('toast-message');
 
-  // Initialize theme based on system preference
+  // Initialize theme
   let isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
   if (isDark) {
     document.body.classList.add('dark-mode');
     themeIcon.textContent = '☀️';
   }
 
-  // Toggle theme
   darkToggle.addEventListener('click', () => {
     isDark = !isDark;
     document.body.classList.toggle('dark-mode', isDark);
@@ -410,14 +445,12 @@ document.addEventListener('DOMContentLoaded', () => {
   function updateStats() {
     const inputText = input.value.trim();
     const outputText = output.textContent.trim();
-    
     inputStats.textContent = `${inputText.length} ${inputText.length === 1 ? 'char' : 'chars'}`;
-    
     const lines = outputText ? outputText.split('\n').length : 0;
     outputStats.textContent = `${lines} ${lines === 1 ? 'line' : 'lines'}`;
   }
 
-  // Syntax highlighter (preserved & improved)
+  // Syntax highlighter
   function highlightSyntax(json) {
     return json
       .replace(/&/g, '&amp;')
@@ -436,12 +469,22 @@ document.addEventListener('DOMContentLoaded', () => {
       });
   }
 
-  // Format JSON with visual feedback
-  function formatJSON(indent) {
-    hideMessages();
-    const value = input.value.trim();
+  // ✅ NEW: Show elegant toast
+  function showToast(message, type = 'success') {
+    toast.className = `toast ${type}`;
+    toastMessage.textContent = message;
+    toast.classList.add('show');
     
+    setTimeout(() => {
+      toast.classList.remove('show');
+    }, 2200);
+  }
+
+  // Format JSON
+  function formatJSON(indent) {
+    const value = input.value.trim();
     if (!value) {
+      showToast('⚠️ Please enter JSON first', 'error');
       output.innerHTML = '<span style="color:#94a3b8">Enter JSON to format...</span>';
       updateStats();
       return;
@@ -451,30 +494,12 @@ document.addEventListener('DOMContentLoaded', () => {
       const obj = JSON.parse(value);
       const formatted = JSON.stringify(obj, null, indent);
       output.innerHTML = highlightSyntax(formatted);
-      showSuccess(`✅ ${indent === 0 ? 'Minified' : 'Formatted'} successfully!`);
+      showToast(`✅ ${indent === 0 ? 'Minified' : 'Formatted'} successfully!`);
       updateStats();
     } catch (e) {
-      showError(`❌ Invalid JSON: ${e.message}`);
+      showToast(`❌ Invalid JSON: ${e.message.substring(0, 50)}...`, 'error');
       output.innerHTML = '<span style="color:#94a3b8">Fix errors to see formatted output</span>';
     }
-  }
-
-  // Message helpers
-  function showError(message) {
-    error.textContent = message;
-    error.style.display = 'block';
-    success.style.display = 'none';
-  }
-
-  function showSuccess(message) {
-    success.textContent = message;
-    success.style.display = 'block';
-    error.style.display = 'none';
-  }
-
-  function hideMessages() {
-    error.style.display = 'none';
-    success.style.display = 'none';
   }
 
   // Button actions
@@ -494,53 +519,45 @@ document.addEventListener('DOMContentLoaded', () => {
     try {
       const text = output.textContent.trim();
       if (!text || text === '{}') {
-        showError('⚠️ Nothing to copy');
+        showToast('⚠️ Nothing to copy', 'error');
         return;
       }
       await navigator.clipboard.writeText(text);
-      showSuccess('✅ Copied to clipboard!');
+      showToast('✅ Copied to clipboard!');
       copyBtn.classList.add('pulse');
       setTimeout(() => copyBtn.classList.remove('pulse'), 400);
     } catch (err) {
-      showError('❌ Failed to copy');
+      showToast('❌ Copy failed — try selecting manually', 'error');
     }
   });
 
   clearBtn.addEventListener('click', () => {
     input.value = '';
     output.innerHTML = '{}';
-    hideMessages();
     updateStats();
+    showToast('🧹 Cleared!');
   });
 
-  // Real-time input stats
-  input.addEventListener('input', () => {
-    hideMessages();
-    updateStats();
-  });
+  input.addEventListener('input', updateStats);
 
   // Keyboard shortcuts
   document.addEventListener('keydown', (e) => {
-    if (e.ctrlKey || e.metaKey) {
+    if ((e.ctrlKey || e.metaKey) && !e.shiftKey && !e.altKey) {
       if (e.key === 'f' || e.key === 'F') {
-        e.preventDefault();
-        formatBtn.click();
+        e.preventDefault(); formatBtn.click();
       } else if (e.key === 'm' || e.key === 'M') {
-        e.preventDefault();
-        minifyBtn.click();
+        e.preventDefault(); minifyBtn.click();
       } else if (e.key === 'c' || e.key === 'C') {
-        e.preventDefault();
-        copyBtn.click();
-      } else if (e.key === 'l' || e.key === 'L') {
-        e.preventDefault();
-        clearBtn.click();
+        e.preventDefault(); copyBtn.click();
+      } else if (e.key === 'l' || e.key === 'L' || e.key === 'k') {
+        e.preventDefault(); clearBtn.click();
       }
     }
   });
 
   // Initialize
   updateStats();
-  formatJSON(2); // Initial format
+  formatJSON(2);
 });
 </script>
 </body>
